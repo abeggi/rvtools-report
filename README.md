@@ -13,13 +13,18 @@ Uno strumento professionale per l'analisi e la visualizzazione degli export RVTo
 
 ### Utilizzando Docker Compose (Consigliato)
 1. Clona il repository.
-2. Avvia i container:
+2. Avvia i container (scarica l'immagine o la costruisce localmente):
    ```bash
    docker-compose up -d
    ```
 3. Accedi all'applicazione su `http://localhost:8080`.
 
-I tuoi dati (uploads e report) verranno salvati nella cartella locale `./rvtools_data`.
+Per fermare l'applicazione:
+```bash
+docker-compose down
+```
+
+I tuoi dati (uploads e report) verranno salvati nella cartella locale `./rvtools_data` grazie al volume configurato.
 
 ### Utilizzando Docker CLI
 1. Costruisci l'immagine:
