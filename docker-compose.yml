@@ -1,6 +1,5 @@
 services:
   rvtools-analyzer:
-    build: .
     image: abeggi/rvtools-vibe:latest
     container_name: rvtools-analyzer
     ports:
