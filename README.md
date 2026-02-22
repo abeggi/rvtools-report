@@ -32,7 +32,7 @@ I tuoi dati (uploads e report) verranno salvati nella cartella locale `./rvtools
      -p 8080:8080 \
      -v $(pwd)/rvtools_data:/app/data \
      --name rvtools-analyzer \
-     rvtools-vibe
+     abeggi/rvtools-vibe:latest
    ```
 
 ## Licenza
