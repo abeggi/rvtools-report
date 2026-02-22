@@ -1,2 +1,5 @@
 regole.md
 app/data/
+app/uploads/
+app/reports/
+app/settings.json
