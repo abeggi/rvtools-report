@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% block title %}Storico Report — RVTools Analyzer{% endblock %}
+
+{% block extra_head %}
+<style>
+    .history-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .history-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .report-card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        transition: all 0.2s ease;
+    }
+
+    .report-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .report-card-info {
+        flex: 1;
+        min-width: 0;
+        /* Important for ellipsis */
+    }
+
+    .report-card-info h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .report-card-info .meta {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.8rem;
+        color: var(--muted);
+    }
+
+    .source-label {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        opacity: 0.8;
+    }
+
+    /* Stats Section - Vertical Stacking */
+    .report-card-stats {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        padding: 0 1rem;
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        min-width: 70px;
+    }
+
+    .stat-num {
+        font-size: 1.5rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 4px;
+    }
+
+    .stat-num.on {
+        color: var(--success);
+    }
+
+    .stat-num.off {
+        color: var(--warning);
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+    }
+
+    .report-card-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .btn-icon {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    .btn-danger-soft {
+        background: rgba(220, 53, 69, 0.1);
+        color: #ff4d5e;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .btn-danger-soft:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+        background: var(--surface);
+        border-radius: var(--radius);
+        border: 2px dashed var(--border);
+    }
+
+    .empty-state .icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        opacity: 0.5;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="history-container">
+        <div class="page-header">
+            <h1>🕓 Storico Report</h1>
+            <p>I report generati vengono eliminati automaticamente dopo 180 giorni.</p>
+        </div>
+
+        {% if reports %}
+        <div class="history-list">
+            {% for rep in reports %}
+            <div class="report-card">
+                <div class="report-card-info">
+                    <h3>{{ rep.custom_title if rep.custom_title else rep.filename }}</h3>
+                    <div class="meta">
+                        <div class="data-label">Data: {{ rep.custom_date if rep.custom_date else rep.created[:10] + " "
+                            + rep.created[11:16] }}</div>
+                        <div class="source-label" title="{{ rep.filename }}">Source: {{ rep.filename }}</div>
+                    </div>
+                </div>
+
+                <div class="report-card-stats">
+                    <div class="stat-item">
+                        <div class="stat-num on">{{ rep.vms_on }}</div>
+                        <div class="stat-label">Accese</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num off">{{ rep.vms_off }}</div>
+                        <div class="stat-label">Spente</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num">{{ rep.total }}</div>
+                        <div class="stat-label">Totale</div>
+                    </div>
+                </div>
+
+                <div class="report-card-actions">
+                    <a href="/report/{{ rep.id }}" class="btn btn-primary btn-icon" title="Apri Report">📊 Apri</a>
+                    <a href="/history/{{ rep.id }}/download" class="btn btn-outline btn-icon" title="Scarica XLS">📥</a>
+                    <form action="/history/{{ rep.id }}/delete" method="POST" style="display:inline;"
+                        onsubmit="return confirm('Eliminare definitivamente questo report?');">
+                        <button type="submit" class="btn btn-danger-soft btn-icon" title="Elimina">🗑</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="icon">📂</div>
+            <h3>Nessun report trovato</h3>
+            <p>Carica un file RVTools per generare il tuo primo report.</p>
+            <br>
+            <a href="/" class="btn btn-primary">⬆ Carica un file</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

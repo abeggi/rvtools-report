@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Impostazioni — RVTools Analyzer{% endblock %}
+
+{% block extra_head %}
+<style>
+    .settings-form {
+        max-width: 580px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px 14px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        font-family: inherit;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent);
+    }
+
+    .color-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .color-row input[type="color"] {
+        width: 48px;
+        height: 42px;
+        padding: 4px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        cursor: pointer;
+    }
+
+    .color-preview {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+    }
+
+    .preview-bar {
+        height: 6px;
+        border-radius: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        margin-bottom: 1rem;
+        transition: background 0.3s;
+    }
+
+    .current-logo {
+        max-height: 48px;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page">
+    <div class="page-header">
+        <h1>⚙ Impostazioni</h1>
+        <p>Personalizza il logo, i colori e il nome aziendale del report.</p>
+    </div>
+
+    <div class="settings-form">
+        <form action="/settings" method="post" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label class="form-label">Nome Azienda</label>
+                <input type="text" name="company_name" class="form-control" value="{{ settings.company_name }}"
+                    placeholder="Var Group" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Colore Primario (Blu)</label>
+                <div class="color-row">
+                    <input type="color" name="primary_color" id="primaryPicker" value="{{ settings.primary_color }}" />
+                    <input type="text" name="primary_color_hex" class="form-control"
+                        value="{{ settings.primary_color }}" id="primaryHex" style="font-family:monospace;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Colore Accento (Blu digitale)</label>
+                <div class="color-row">
+                    <input type="color" name="accent_color" id="accentPicker" value="{{ settings.accent_color }}" />
+                    <input type="text" name="accent_color_hex" class="form-control" value="{{ settings.accent_color }}"
+                        id="accentHex" style="font-family:monospace;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Logo Aziendale (PNG/SVG, opzionale)</label>
+                {% if settings.logo_url %}
+                <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 1rem;">
+                    <img src="{{ settings.logo_url }}" class="current-logo" alt="Logo attuale"
+                        style="margin-bottom:0;" />
+                    <label
+                        style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; color: var(--danger);">
+                        <input type="checkbox" name="delete_logo" value="1">
+                        <span>🗑 Rimuovi logo attuale</span>
+                    </label>
+                </div>
+                {% endif %}
+                <input type="file" name="logo" class="form-control" accept="image/*" />
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">💾 Salva impostazioni</button>
+            <a href="/" class="btn btn-outline" style="margin-left:0.5rem;">Annulla</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const primaryPicker = document.getElementById('primaryPicker');
+    const primaryHex = document.getElementById('primaryHex');
+    const accentPicker = document.getElementById('accentPicker');
+    const accentHex = document.getElementById('accentHex');
+
+    primaryPicker.addEventListener('input', () => { primaryHex.value = primaryPicker.value; });
+    accentPicker.addEventListener('input', () => { accentHex.value = accentPicker.value; });
+    primaryHex.addEventListener('input', () => {
+        if (/^#[0-9a-fA-F]{6}$/.test(primaryHex.value)) primaryPicker.value = primaryHex.value;
+    });
+    accentHex.addEventListener('input', () => {
+        if (/^#[0-9a-fA-F]{6}$/.test(accentHex.value)) accentPicker.value = accentHex.value;
+    });
+</script>
+{% endblock %}

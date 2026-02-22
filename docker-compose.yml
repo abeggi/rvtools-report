@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  rvtools-analyzer:
+    build: .
+    image: rvtools-vibe
+    container_name: rvtools-analyzer
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./rvtools_data:/app/data
+    restart: unless-stopped
+    environment:
+      - DATA_DIR=/app/data

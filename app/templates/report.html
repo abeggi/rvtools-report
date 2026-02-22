@@ -1,0 +1,850 @@
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Report RVTools — {{ filename }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --primary: {
+                    {
+                    custom.primary_color | default('#0055b8')
+                }
+            }
+
+            ;
+
+            --accent: {
+                    {
+                    custom.accent_color | default('#1268FB')
+                }
+            }
+
+            ;
+            --bg: #0a0e1a;
+            --surface: #111827;
+            --surface2: #1a2236;
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f0f4ff;
+            --muted: #8b9ab5;
+            --success: #00c9a7;
+            --warning: #ffb800;
+            --danger: #ff4d6a;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        .pdf-header {
+            display: none;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Manrope', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        /* ── Header ── */
+        .report-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .report-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            background: #0055b8 !important;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .logo-mark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .report-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .report-meta {
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-top: 4px;
+        }
+
+        .meta-line {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 450px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(18, 104, 251, 0.3);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── Layout ── */
+        .page {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ── KPI Grid ── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 140px;
+        }
+
+        .kpi::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .kpi-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .kpi-value.on {
+            color: var(--success);
+        }
+
+        .kpi-value.off {
+            color: var(--warning);
+        }
+
+        .kpi-value.tot {
+            color: var(--text);
+        }
+
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Tables ── */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        thead th {
+            background: var(--surface2);
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 9px 12px;
+            text-align: left;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--border);
+        }
+
+        thead th.num {
+            text-align: right;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        tbody td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tbody td.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tfoot td {
+            font-weight: 700;
+            background: var(--surface2);
+            color: var(--text);
+            padding: 9px 12px;
+        }
+
+        tfoot td.num {
+            text-align: right;
+        }
+
+        /* ── Summary table special rows ── */
+        tr.row-on td {
+            color: var(--success);
+        }
+
+        tr.row-off td {
+            color: var(--warning);
+        }
+
+        tr.row-tot td {
+            color: var(--text);
+            font-weight: 700;
+            background: var(--surface2);
+        }
+
+        /* ── Badges ── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .badge-on {
+            background: rgba(0, 201, 167, 0.15);
+            color: var(--success);
+        }
+
+        .badge-off {
+            background: rgba(255, 184, 0, 0.15);
+            color: var(--warning);
+        }
+
+        /* ── Accordion ── */
+        .accordion {
+            margin-bottom: 0.5rem;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .acc-toggle {
+            width: 100%;
+            background: var(--surface2);
+            border: none;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1.1rem;
+            transition: background 0.2s;
+        }
+
+        .acc-toggle:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .acc-arrow {
+            transition: transform 0.25s;
+            color: var(--muted);
+        }
+
+        .acc-toggle.open .acc-arrow {
+            transform: rotate(180deg);
+        }
+
+        .acc-body {
+            display: none;
+            padding: 1rem;
+            background: var(--surface);
+        }
+
+        .acc-body.open {
+            display: block;
+        }
+
+        .acc-tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: rgba(18, 104, 251, 0.15);
+            color: var(--accent);
+            margin-left: 8px;
+        }
+
+        .dc-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin: -0.25rem 0 0.5rem;
+        }
+
+        .host-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .host-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+        }
+
+        .host-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .host-stats {
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .host-stat span {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+
+        @media (max-width:640px) {
+            .report-header {
+                padding: 0.75rem 1rem;
+            }
+
+            .page {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Sticky Header ────────────────────────────────────────────────────── -->
+    <header class="report-header">
+        <div class="report-header-left">
+            <div class="logo-mark">
+                {% if custom.logo_url %}<img src="{{ custom.logo_url }}" alt="Logo" />{% else %}VG{% endif %}
+            </div>
+            <div>
+                <div class="report-title">{{ report_title if report_title else (custom.company_name | default('Var
+                    Group')) ~ ' — Report RVTools' }}</div>
+                <div class="report-meta">
+                    <div class="meta-line">Data: {{ generation_date }}</div>
+                    <div class="meta-line" title="{{ filename }}">Source: {{ filename }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="/" class="btn btn-outline">Home</a>
+            <a href="/history" class="btn btn-outline">🕓 Storico</a>
+        </div>
+    </header>
+
+    <div class="page">
+
+        <!-- ── KPI Summary ─────────────────────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">Riepilogo</div>
+            <div class="kpi-grid">
+                <div class="kpi">
+                    <div class="kpi-value on">{{ summary_on.count }}</div>
+                    <div class="kpi-label">VM Accese</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value off">{{ summary_off.count }}</div>
+                    <div class="kpi-label">VM Spente</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot">{{ summary_total.count }}</div>
+                    <div class="kpi-label">Totale VM</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot" style="font-size:1.6rem;">{{ summary_total.tot_disk_used_gb | fmt_gb }}
+                    </div>
+                    <div class="kpi-label">Storage in uso (GB)</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot" style="font-size:1.6rem;">{{ summary_total.tot_disk_prov_gb | fmt_gb }}
+                    </div>
+                    <div class="kpi-label">Storage prov. (GB)</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot">{{ datacenters | length }}</div>
+                    <div class="kpi-label">Datacenter / Host ({{ host_stats | length }})</div>
+                </div>
+            </div>
+            <!-- Breakdown OS VM Accese (Drill-down) -->
+            <div style="margin-top: 1.5rem;">
+                <div class="section-title" style="font-size:0.85rem; color:var(--muted);">Dettaglio Sistemi Operativi
+                    (VM Accese)</div>
+
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+
+                    {% for cat in [('windows', 'Windows', '#4facfe'), ('linux', 'Linux', '#f093fb'), ('other', 'Altro',
+                    'var(--muted)')] %}
+                    {% set cat_key = cat[0] %}
+                    {% set cat_label = cat[1] %}
+                    {% set cat_color = cat[2] %}
+                    {% set vms_in_cat = summary_on.os_vms[cat_key] %}
+
+                    <div class="accordion">
+                        <button class="acc-toggle"
+                            onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                            <span>
+                                <span
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:{{ cat_color }}; margin-right:8px;"></span>
+                                {{ cat_label }}
+                                <span class="acc-tag">{{ vms_in_cat | length }} VM</span>
+                            </span>
+                            <span class="acc-arrow">▼</span>
+                        </button>
+                        <div class="acc-body">
+                            {% if vms_in_cat %}
+                            <div class="table-wrap" style="max-height: 300px; overflow-y: auto; border:none;">
+                                <table style="font-size: 0.75rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>VM</th>
+                                            <th>OS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for v in vms_in_cat | sort(attribute='name') %}
+                                        <tr>
+                                            <td style="font-weight:600;">{{ v.name }}</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">{{ v.os or '—' }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div style="padding:1rem; text-align:center; color:var(--muted); font-size:0.8rem;">Nessuna
+                                VM in questa categoria</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Tabella riepilogo (Accese / Spente / Totale) ─────────────────────── -->
+        <div class="section">
+            <div class="section-title">Tabella Riepilogo</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stato VM</th>
+                            <th class="num">Q.tà</th>
+                            <th class="num">CPU (vCPU)</th>
+                            <th class="num">RAM [GB]</th>
+                            <th class="num">Storage in uso [GB]</th>
+                            <th class="num">Storage prov. [GB]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-on">
+                            <td><span class="badge badge-on">Accese</span></td>
+                            <td class="num">{{ summary_on.count }}</td>
+                            <td class="num">{{ summary_on.tot_vcpu | fmt_int }}</td>
+                            <td class="num">{{ summary_on.tot_vram_gb | fmt_gb }}</td>
+                            <td class="num">{{ summary_on.tot_disk_used_gb | fmt_gb }}</td>
+                            <td class="num">{{ summary_on.tot_disk_prov_gb | fmt_gb }}</td>
+                        </tr>
+                        <tr class="row-off">
+                            <td><span class="badge badge-off">Spente</span></td>
+                            <td class="num">{{ summary_off.count }}</td>
+                            <td class="num">{{ summary_off.tot_vcpu | fmt_int }}</td>
+                            <td class="num">{{ summary_off.tot_vram_gb | fmt_gb }}</td>
+                            <td class="num">{{ summary_off.tot_disk_used_gb | fmt_gb }}</td>
+                            <td class="num">{{ summary_off.tot_disk_prov_gb | fmt_gb }}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Totale</strong></td>
+                            <td class="num"><strong>{{ summary_total.count }}</strong></td>
+                            <td class="num"><strong>{{ summary_total.tot_vcpu | fmt_int }}</strong></td>
+                            <td class="num"><strong>{{ summary_total.tot_vram_gb | fmt_gb }}</strong></td>
+                            <td class="num"><strong>{{ summary_total.tot_disk_used_gb | fmt_gb }}</strong></td>
+                            <td class="num"><strong>{{ summary_total.tot_disk_prov_gb | fmt_gb }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── Vista per Datacenter ──────────────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">Per Datacenter</div>
+            {% for dc_name, dc_data in datacenters.items() %}
+            <div class="accordion">
+                <button class="acc-toggle open"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🏢 {{ dc_name }}
+                        <span class="acc-tag">
+                            {{ dc_data.on.count }} accese &nbsp;/&nbsp; {{ dc_data.off.count }} spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body open">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Stato</th>
+                                    <th class="num">Q.tà</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Storage in uso [GB]</th>
+                                    <th class="num">Storage prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row-on">
+                                    <td><span class="badge badge-on">Accese</span></td>
+                                    <td class="num">{{ dc_data.on.count }}</td>
+                                    <td class="num">{{ dc_data.on.tot_vcpu | fmt_int }}</td>
+                                    <td class="num">{{ dc_data.on.tot_vram_gb | fmt_gb }}</td>
+                                    <td class="num">{{ dc_data.on.tot_disk_used_gb | fmt_gb }}</td>
+                                    <td class="num">{{ dc_data.on.tot_disk_prov_gb | fmt_gb }}</td>
+                                </tr>
+                                <tr class="row-off">
+                                    <td><span class="badge badge-off">Spente</span></td>
+                                    <td class="num">{{ dc_data.off.count }}</td>
+                                    <td class="num">{{ dc_data.off.tot_vcpu | fmt_int }}</td>
+                                    <td class="num">{{ dc_data.off.tot_vram_gb | fmt_gb }}</td>
+                                    <td class="num">{{ dc_data.off.tot_disk_used_gb | fmt_gb }}</td>
+                                    <td class="num">{{ dc_data.off.tot_disk_prov_gb | fmt_gb }}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td><strong>Totale</strong></td>
+                                    <td class="num"><strong>{{ dc_data.on.count + dc_data.off.count }}</strong></td>
+                                    <td class="num"><strong>{{ (dc_data.on.tot_vcpu + dc_data.off.tot_vcpu) | fmt_int
+                                            }}</strong></td>
+                                    <td class="num"><strong>{{ (dc_data.on.tot_vram_gb + dc_data.off.tot_vram_gb) |
+                                            fmt_gb }}</strong></td>
+                                    <td class="num"><strong>{{ (dc_data.on.tot_disk_used_gb +
+                                            dc_data.off.tot_disk_used_gb) | fmt_gb }}</strong></td>
+                                    <td class="num"><strong>{{ (dc_data.on.tot_disk_prov_gb +
+                                            dc_data.off.tot_disk_prov_gb) | fmt_gb }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- ── Vista per Host (VM accese) ─────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">VM Accese per Host</div>
+            {% for dc_name, hosts in vms_on_by_dc.items() %}
+            <div class="dc-label">{{ dc_name }}</div>
+            {% for host_name, vms in hosts.items() %}
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 {{ host_name }}
+                        <span class="acc-tag">{{ vms | length }} VM accese</span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vm in vms | sort(attribute='name') %}
+                                <tr>
+                                    <td style="font-weight:600;">{{ vm.name }}</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">{{ vm.os or '—' }}</td>
+                                    <td class="num">{{ vm.num_vcpu }}</td>
+                                    <td class="num">{{ (vm.memory_mb / 1024) | round(2) }}</td>
+                                    <td class="num">{{ vm.disk_used_gb }}</td>
+                                    <td class="num">{{ vm.disk_provisioned_gb }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>{{ vms | sum(attribute='num_vcpu') }}</strong></td>
+                                    <td class="num"><strong>{{ (vms | sum(attribute='memory_mb') / 1024) | round(2)
+                                            }}</strong></td>
+                                    <td class="num"><strong>{{ vms | sum(attribute='disk_used_gb') | round(3)
+                                            }}</strong></td>
+                                    <td class="num"><strong>{{ vms | sum(attribute='disk_provisioned_gb') | round(3)
+                                            }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <br />
+            {% endfor %}
+        </div>
+
+        <!-- ── Tabella VM Spente ──────────────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">VM Spente per Host</div>
+            {% for dc_name, hosts in vms_off_by_dc.items() %}
+            <div class="dc-label">{{ dc_name }}</div>
+            {% for host_name, vms in hosts.items() %}
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 {{ host_name }}
+                        <span class="acc-tag" style="background:rgba(255,184,0,0.12); color:var(--warning);">
+                            {{ vms | length }} VM spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vm in vms | sort(attribute='name') %}
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">{{ vm.name }}</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">{{ vm.os or '—' }}</td>
+                                    <td class="num">{{ vm.num_vcpu }}</td>
+                                    <td class="num">{{ (vm.memory_mb / 1024) | round(2) }}</td>
+                                    <td class="num">{{ vm.disk_used_gb }}</td>
+                                    <td class="num">{{ vm.disk_provisioned_gb }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>{{ vms | sum(attribute='num_vcpu') }}</strong></td>
+                                    <td class="num"><strong>{{ (vms | sum(attribute='memory_mb') / 1024) | round(2)
+                                            }}</strong></td>
+                                    <td class="num"><strong>{{ vms | sum(attribute='disk_used_gb') | round(3)
+                                            }}</strong></td>
+                                    <td class="num"><strong>{{ vms | sum(attribute='disk_provisioned_gb') | round(3)
+                                            }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <br />
+            {% endfor %}
+            {% if not vms_off %}
+            <p style="color:var(--muted); font-size:0.875rem;">Nessuna VM spenta rilevata.</p>
+            {% endif %}
+        </div>
+
+
+    </div><!-- /page -->
+
+    <footer
+        style="text-align:center; padding:1.5rem; font-size:0.75rem; color:var(--muted); border-top:1px solid var(--border); margin-top:2rem;">
+        {{ custom.company_name | default('Var Group') }} — RVTools Analyzer &nbsp;·&nbsp; Dati conservati per 180
+        giorni<br>
+        Andrea Beggi - andrea.beggi@vargroup.com
+    </footer>
+
+</body>
+
+</html>

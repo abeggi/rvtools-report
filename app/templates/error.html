@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Errore — RVTools Analyzer{% endblock %}
+{% block content %}
+<div class="page" style="max-width:600px; margin-top:4rem;">
+    <div class="card" style="text-align:center; padding:3rem;">
+        <div style="font-size:3rem; margin-bottom:1rem;">⚠️</div>
+        <h2 style="margin-bottom:0.75rem;">Si è verificato un errore</h2>
+        <p style="color:var(--muted); margin-bottom:2rem;">{{ message }}</p>
+        <a href="/" class="btn btn-primary">← Torna all'upload</a>
+    </div>
+</div>
+{% endblock %}

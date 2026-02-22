@@ -1,0 +1,2839 @@
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Report RVTools — RVTools_2024-02-27.xlsx</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --primary: {
+                    {
+                    custom.primary_color | default('#0055b8')
+                }
+            }
+
+            ;
+
+            --accent: {
+                    {
+                    custom.accent_color | default('#1268FB')
+                }
+            }
+
+            ;
+            --bg: #0a0e1a;
+            --surface: #111827;
+            --surface2: #1a2236;
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f0f4ff;
+            --muted: #8b9ab5;
+            --success: #00c9a7;
+            --warning: #ffb800;
+            --danger: #ff4d6a;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        .pdf-header {
+            display: none;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Manrope', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        /* ── Header ── */
+        .report-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .report-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            background: #0055b8 !important;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .logo-mark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .report-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .report-meta {
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(18, 104, 251, 0.3);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── Layout ── */
+        .page {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ── KPI Grid ── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 140px;
+        }
+
+        .kpi::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .kpi-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .kpi-value.on {
+            color: var(--success);
+        }
+
+        .kpi-value.off {
+            color: var(--warning);
+        }
+
+        .kpi-value.tot {
+            color: var(--text);
+        }
+
+        .kpi-sub {
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Tables ── */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        thead th {
+            background: var(--surface2);
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 9px 12px;
+            text-align: left;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--border);
+        }
+
+        thead th.num {
+            text-align: right;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        tbody td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tbody td.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tfoot td {
+            font-weight: 700;
+            background: var(--surface2);
+            color: var(--text);
+            padding: 9px 12px;
+        }
+
+        tfoot td.num {
+            text-align: right;
+        }
+
+        /* ── Summary table special rows ── */
+        tr.row-on td {
+            color: var(--success);
+        }
+
+        tr.row-off td {
+            color: var(--warning);
+        }
+
+        tr.row-tot td {
+            color: var(--text);
+            font-weight: 700;
+            background: var(--surface2);
+        }
+
+        /* ── Badges ── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .badge-on {
+            background: rgba(0, 201, 167, 0.15);
+            color: var(--success);
+        }
+
+        .badge-off {
+            background: rgba(255, 184, 0, 0.15);
+            color: var(--warning);
+        }
+
+        /* ── Accordion ── */
+        .accordion {
+            margin-bottom: 0.5rem;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .acc-toggle {
+            width: 100%;
+            background: var(--surface2);
+            border: none;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1.1rem;
+            transition: background 0.2s;
+        }
+
+        .acc-toggle:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .acc-arrow {
+            transition: transform 0.25s;
+            color: var(--muted);
+        }
+
+        .acc-toggle.open .acc-arrow {
+            transform: rotate(180deg);
+        }
+
+        .acc-body {
+            display: none;
+            padding: 1rem;
+            background: var(--surface);
+        }
+
+        .acc-body.open {
+            display: block;
+        }
+
+        .acc-tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: rgba(18, 104, 251, 0.15);
+            color: var(--accent);
+            margin-left: 8px;
+        }
+
+        .dc-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin: -0.25rem 0 0.5rem;
+        }
+
+        .host-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .host-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+        }
+
+        .host-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .host-stats {
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .host-stat span {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+
+        @media (max-width:640px) {
+            .report-header {
+                padding: 0.75rem 1rem;
+            }
+
+            .page {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Sticky Header ────────────────────────────────────────────────────── -->
+    <header class="report-header">
+        <div class="report-header-left">
+            <div class="logo-mark">
+                VG
+            </div>
+            <div>
+                <div class="report-title">pollo</div>
+                <div class="report-meta">
+                    <div>Data: 22/02/2026 13:13</div>
+                    <div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:400px;">File: RVTools_2024-02-27.xlsx &nbsp;·&nbsp; ID: 1dcf817d</div>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="/" class="btn btn-outline">Home</a>
+            <a href="/history" class="btn btn-outline">🕓 Storico</a>
+        </div>
+    </header>
+
+    <div class="page">
+
+        <!-- ── KPI Summary ─────────────────────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">Riepilogo</div>
+            <div class="kpi-grid">
+                <div class="kpi">
+                    <div class="kpi-value on">105</div>
+                    <div class="kpi-label">VM Accese</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value off">19</div>
+                    <div class="kpi-label">VM Spente</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot">124</div>
+                    <div class="kpi-label">Totale VM</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot" style="font-size:1.6rem;">25.101
+                    </div>
+                    <div class="kpi-label">Storage in uso (GB)</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot" style="font-size:1.6rem;">45.528
+                    </div>
+                    <div class="kpi-label">Storage prov. (GB)</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot">1</div>
+                    <div class="kpi-label">Datacenter / Host (5)</div>
+                </div>
+            </div>
+            <!-- Breakdown OS VM Accese (Drill-down) -->
+            <div style="margin-top: 1.5rem;">
+                <div class="section-title" style="font-size:0.85rem; color:var(--muted);">Dettaglio Sistemi Operativi
+                    (VM Accese)</div>
+
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+
+                    
+                    
+                    
+                    
+                    
+
+                    <div class="accordion">
+                        <button class="acc-toggle"
+                            onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                            <span>
+                                <span
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#4facfe; margin-right:8px;"></span>
+                                Windows
+                                <span class="acc-tag">6 VM</span>
+                            </span>
+                            <span class="acc-arrow">▼</span>
+                        </button>
+                        <div class="acc-body">
+                            
+                            <div class="table-wrap" style="max-height: 300px; overflow-y: auto; border:none;">
+                                <table style="font-size: 0.75rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>VM</th>
+                                            <th>OS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">DC3-OVH</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows Server 2012 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">GMN4</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows Server 2008 R2 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Jigen2</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows Server 2016 or later (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Saturno3b</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows Server 2008 R2 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">SiamoCalcioWin_NEW</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows Server 2012 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">VBandR</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows Server 2016 or later (64-bit)</td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+
+                    <div class="accordion">
+                        <button class="acc-toggle"
+                            onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                            <span>
+                                <span
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#f093fb; margin-right:8px;"></span>
+                                Linux
+                                <span class="acc-tag">91 VM</span>
+                            </span>
+                            <span class="acc-arrow">▼</span>
+                        </button>
+                        <div class="acc-body">
+                            
+                            <div class="table-wrap" style="max-height: 300px; overflow-y: auto; border:none;">
+                                <table style="font-size: 0.75rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>VM</th>
+                                            <th>OS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">ADW-NEW</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">ADW-REVIVE-MATOMO</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">app-server-ese-node-02</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">AWSpezia</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">BINBOX</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">BINBOX-02</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">chat.tifosinrete.it</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">CMS-db</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">CMS-LAB</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">CMS-strapi</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">CMS_PRO-BACKOFFICE</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">CMS_PRO-DB</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">CMS_PRO-NFS</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">CMS_PRO-RENDERING-0</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">CMS_PRO-STRAPI</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Cookiebot</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">DB-01-PROGETTO-CALCIO</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">DBCS-00-TIR-PROXY</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">DBCS-01-TIR</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">DBCS-02-TIR</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">DBCS-03-TIR</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Firewall</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Other 2.6.x Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">FW-VARNSIH-TIR</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">GLOBAL-HTTPD-01-TIR</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">GLOBAL-HTTPD-02-TIR</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">IPFY</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">LINUX-TEST-ENV</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Linuxweb</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">SUSE openSUSE (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Mail4</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">MANAGEMENT-CRON-PROGETTO-CALCIO</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">MANAGER-SERVITIQUI-KUBERNETES</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">MANAGER-SERVITIQUI-KUBERNETES_restored</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Media</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">MEMCACHED-01-TIR</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">NEO4J-SERVER01</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">NFS-TIR</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">NFS-TOM</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">NODE01-C01-KUBERNETES</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">NODE02-C01-KUBERNETES</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">NODE03-C01-KUBERNETES</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">NODE04-C01-KUBERNETES</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PCW</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">pDNS-primary</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TIR-01</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TIR-02</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TIR-03</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TIR-04</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TIR-05</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TIR-06</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TIR-07</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TIR-08</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TOM-01</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PHP-FPM-TOM-02</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PlayerManager</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PleskDB</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PleskSi4web</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PORTALE</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">PORTALE_GESTIONE_SCHEDE</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">RANCHER01-KUBERNETES</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">RANCHER02-KUBERNETES</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">RDV-ADMIN</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">RDV-DB</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">RDV-FRONTEND</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">RDV-MANAGE</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">reverse proxy03 (bis)</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">reverseproxy-01-exVarnishDev</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">reverseproxy-02</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">reverseproxy-ovh</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Sentry</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">SiHappy</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">CentOS 7 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">SiHappyDev</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">CentOS 7 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">StudioItc-LAB</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">VarnishCache</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">VEEAM-HELPER-01</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical00-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical02-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical03-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical04-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical05-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical06-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical07-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical08-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical09-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical10-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical11-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical14-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vintdev-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vintdev-plesk-02</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Zammad451</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Zimbra</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">zzLaboratory</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Ubuntu Linux (64-bit)</td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+
+                    <div class="accordion">
+                        <button class="acc-toggle"
+                            onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                            <span>
+                                <span
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--muted); margin-right:8px;"></span>
+                                Altro
+                                <span class="acc-tag">8 VM</span>
+                            </span>
+                            <span class="acc-arrow">▼</span>
+                        </button>
+                        <div class="acc-body">
+                            
+                            <div class="table-wrap" style="max-height: 300px; overflow-y: auto; border:none;">
+                                <table style="font-size: 0.75rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>VM</th>
+                                            <th>OS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">@FW-DPT-01</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">FreeBSD 12 or later versions (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">@FW-DPT05</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">FreeBSD 12 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Api_rest</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">—</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">FW-KUBERNETES</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">FreeBSD 12 or later versions (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">NFS-KUBERNETES</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">FreeBSD 12 or later versions (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Template AlmaLinux8+Plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">—</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical12-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">—</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Vertical13-plesk</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">—</td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Tabella riepilogo (Accese / Spente / Totale) ─────────────────────── -->
+        <div class="section">
+            <div class="section-title">Tabella Riepilogo</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stato VM</th>
+                            <th class="num">Q.</th>
+                            <th class="num">tCPU (vCPU)</th>
+                            <th class="num">RAM [GB]</th>
+                            <th class="num">Storage in uso [GB]</th>
+                            <th class="num">Storage prov. [GB]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-on">
+                            <td><span class="badge badge-on">Accese</span></td>
+                            <td class="num">105</td>
+                            <td class="num">452</td>
+                            <td class="num">1.480</td>
+                            <td class="num">22.831</td>
+                            <td class="num">41.686</td>
+                        </tr>
+                        <tr class="row-off">
+                            <td><span class="badge badge-off">Spente</span></td>
+                            <td class="num">19</td>
+                            <td class="num">53</td>
+                            <td class="num">170</td>
+                            <td class="num">2.269</td>
+                            <td class="num">3.842</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Totale</strong></td>
+                            <td class="num"><strong>124</strong></td>
+                            <td class="num"><strong>505</strong></td>
+                            <td class="num"><strong>1.650</strong></td>
+                            <td class="num"><strong>25.101</strong></td>
+                            <td class="num"><strong>45.528</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── Vista per Datacenter ──────────────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">Per Datacenter</div>
+            
+            <div class="accordion">
+                <button class="acc-toggle open"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🏢 pcc-92-222-223-54_datacenter3405
+                        <span class="acc-tag">
+                            105 accese &nbsp;/&nbsp; 19 spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body open">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Stato</th>
+                                    <th class="num">Q.</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Storage in uso [GB]</th>
+                                    <th class="num">Storage prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row-on">
+                                    <td><span class="badge badge-on">Accese</span></td>
+                                    <td class="num">105</td>
+                                    <td class="num">452</td>
+                                    <td class="num">1.480</td>
+                                    <td class="num">22.831</td>
+                                    <td class="num">41.686</td>
+                                </tr>
+                                <tr class="row-off">
+                                    <td><span class="badge badge-off">Spente</span></td>
+                                    <td class="num">19</td>
+                                    <td class="num">53</td>
+                                    <td class="num">170</td>
+                                    <td class="num">2.269</td>
+                                    <td class="num">3.842</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td><strong>Totale</strong></td>
+                                    <td class="num"><strong>124</strong></td>
+                                    <td class="num"><strong>505</strong></td>
+                                    <td class="num"><strong>1.650</strong></td>
+                                    <td class="num"><strong>25.101</strong></td>
+                                    <td class="num"><strong>45.528</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- ── Vista per Host (VM accese) ─────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">VM Accese per Host</div>
+            
+            <div class="dc-label">pcc-92-222-223-54_datacenter3405</div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.53
+                        <span class="acc-tag">30 VM accese</span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">@FW-DPT-01</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">FreeBSD 12 or later versions (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">4.529</td>
+                                    <td class="num">102.08</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">AWSpezia</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">147.386</td>
+                                    <td class="num">308.082</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">CMS_PRO-DB</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">56.613</td>
+                                    <td class="num">108.11</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">CMS_PRO-STRAPI</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">34.896</td>
+                                    <td class="num">108.108</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Cookiebot</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">37.138</td>
+                                    <td class="num">54.099</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">DBCS-03-TIR</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">69.504</td>
+                                    <td class="num">166.112</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">FW-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">FreeBSD 12 or later versions (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">5.093</td>
+                                    <td class="num">10.08</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">FW-VARNSIH-TIR</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">36.78</td>
+                                    <td class="num">90.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">IPFY</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">15.021</td>
+                                    <td class="num">52.101</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Mail4</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">897.645</td>
+                                    <td class="num">2064.105</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">MANAGEMENT-CRON-PROGETTO-CALCIO</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">10.313</td>
+                                    <td class="num">34.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">MANAGER-SERVITIQUI-KUBERNETES_restored</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">39.705</td>
+                                    <td class="num">70.081</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">MEMCACHED-01-TIR</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">13.842</td>
+                                    <td class="num">20.11</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">NFS-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">FreeBSD 12 or later versions (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">13.93</td>
+                                    <td class="num">16.1</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">NFS-TIR</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">659.725</td>
+                                    <td class="num">1044.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">NODE01-C01-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">38.671</td>
+                                    <td class="num">97.12</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">NODE02-C01-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">46.719</td>
+                                    <td class="num">105.106</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">NODE04-C01-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">45.135</td>
+                                    <td class="num">105.135</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TIR-03</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">31.678</td>
+                                    <td class="num">72.112</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TIR-07</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">31.584</td>
+                                    <td class="num">72.105</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PORTALE_GESTIONE_SCHEDE</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">42.515</td>
+                                    <td class="num">104.102</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Saturno3b</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2008 R2 (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">12.0</td>
+                                    <td class="num">341.887</td>
+                                    <td class="num">1486.179</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Template AlmaLinux8+Plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">2</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">33.281</td>
+                                    <td class="num">524.079</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">VBandR</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2016 or later (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">234.89</td>
+                                    <td class="num">266.15</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">VEEAM-HELPER-01</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">12.536</td>
+                                    <td class="num">24.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical02-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">36.0</td>
+                                    <td class="num">648.646</td>
+                                    <td class="num">936.106</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical07-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">377.867</td>
+                                    <td class="num">524.123</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vintdev-plesk-02</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">125.604</td>
+                                    <td class="num">724.108</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Zammad451</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">48.0</td>
+                                    <td class="num">934.339</td>
+                                    <td class="num">1072.128</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">zzLaboratory</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">155.282</td>
+                                    <td class="num">202.101</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>116</strong></td>
+                                    <td class="num"><strong>366.0</strong></td>
+                                    <td class="num"><strong>5142.754</strong></td>
+                                    <td class="num"><strong>10562.238</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.52
+                        <span class="acc-tag">26 VM accese</span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">@FW-DPT05</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">FreeBSD 12 (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">21.119</td>
+                                    <td class="num">44.079</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">app-server-ese-node-02</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">41.175</td>
+                                    <td class="num">104.1</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">CMS_PRO-RENDERING-0</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">65.468</td>
+                                    <td class="num">108.103</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">DBCS-02-TIR</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">67.945</td>
+                                    <td class="num">166.11</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">GLOBAL-HTTPD-01-TIR</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">17.015</td>
+                                    <td class="num">34.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Jigen2</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2016 or later (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">322.47</td>
+                                    <td class="num">2364.119</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">MANAGER-SERVITIQUI-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">50.71</td>
+                                    <td class="num">70.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">NEO4J-SERVER01</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">41.617</td>
+                                    <td class="num">93.135</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">NFS-TOM</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">58.832</td>
+                                    <td class="num">258.102</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">NODE03-C01-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">47.229</td>
+                                    <td class="num">105.14</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PCW</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">393.194</td>
+                                    <td class="num">566.107</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">pDNS-primary</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">42.978</td>
+                                    <td class="num">108.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TIR-06</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">31.65</td>
+                                    <td class="num">72.115</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TIR-08</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">31.569</td>
+                                    <td class="num">72.105</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PlayerManager</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">30.161</td>
+                                    <td class="num">104.118</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PleskDB</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">161.912</td>
+                                    <td class="num">576.103</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PORTALE</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">59.286</td>
+                                    <td class="num">116.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">RANCHER01-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">23.43</td>
+                                    <td class="num">70.133</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">RANCHER02-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">25.17</td>
+                                    <td class="num">70.132</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">RDV-MANAGE</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">42.966</td>
+                                    <td class="num">108.107</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">reverseproxy-02</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">23.623</td>
+                                    <td class="num">88.101</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">SiamoCalcioWin_NEW</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2012 (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">38.471</td>
+                                    <td class="num">208.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical03-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">650.699</td>
+                                    <td class="num">832.162</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical04-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">558.614</td>
+                                    <td class="num">732.184</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical11-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">376.809</td>
+                                    <td class="num">724.111</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vintdev-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">634.627</td>
+                                    <td class="num">924.112</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>110</strong></td>
+                                    <td class="num"><strong>318.0</strong></td>
+                                    <td class="num"><strong>3858.739</strong></td>
+                                    <td class="num"><strong>8718.998</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.55
+                        <span class="acc-tag">21 VM accese</span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">ADW-NEW</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">83.637</td>
+                                    <td class="num">182.109</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Api_rest</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">8</td>
+                                    <td class="num">12.0</td>
+                                    <td class="num">86.966</td>
+                                    <td class="num">132.086</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">BINBOX</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">170.711</td>
+                                    <td class="num">216.111</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">CMS-LAB</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">49.458</td>
+                                    <td class="num">108.109</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">GLOBAL-HTTPD-02-TIR</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">17.013</td>
+                                    <td class="num">34.105</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">LINUX-TEST-ENV</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">49.687</td>
+                                    <td class="num">108.107</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Linuxweb</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">SUSE openSUSE (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">93.145</td>
+                                    <td class="num">428.082</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Media</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">229.292</td>
+                                    <td class="num">308.108</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TIR-01</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">31.49</td>
+                                    <td class="num">72.115</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TIR-05</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">31.725</td>
+                                    <td class="num">48.116</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">RDV-ADMIN</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">10.0</td>
+                                    <td class="num">115.777</td>
+                                    <td class="num">210.106</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">reverse proxy03 (bis)</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">14.52</td>
+                                    <td class="num">58.09</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">reverseproxy-ovh</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">79.246</td>
+                                    <td class="num">168.769</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Sentry</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">31.815</td>
+                                    <td class="num">108.105</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">StudioItc-LAB</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">204.499</td>
+                                    <td class="num">404.11</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical05-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">548.442</td>
+                                    <td class="num">732.122</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical08-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">367.768</td>
+                                    <td class="num">524.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical09-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">28.0</td>
+                                    <td class="num">390.876</td>
+                                    <td class="num">528.112</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical13-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">92.802</td>
+                                    <td class="num">524.081</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical14-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">30.829</td>
+                                    <td class="num">524.082</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Zimbra</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">5573.051</td>
+                                    <td class="num">7056.107</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>90</strong></td>
+                                    <td class="num"><strong>336.0</strong></td>
+                                    <td class="num"><strong>8292.749</strong></td>
+                                    <td class="num"><strong>12474.836</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.51
+                        <span class="acc-tag">16 VM accese</span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">ADW-REVIVE-MATOMO</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">72.093</td>
+                                    <td class="num">182.118</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">BINBOX-02</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">57.889</td>
+                                    <td class="num">524.104</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">CMS_PRO-BACKOFFICE</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">57.856</td>
+                                    <td class="num">108.106</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">CMS_PRO-NFS</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">46.778</td>
+                                    <td class="num">108.103</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">DB-01-PROGETTO-CALCIO</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">98.907</td>
+                                    <td class="num">178.11</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">DBCS-00-TIR-PROXY</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">26.765</td>
+                                    <td class="num">108.1</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">DC3-OVH</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2012 (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">12.0</td>
+                                    <td class="num">42.119</td>
+                                    <td class="num">212.116</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">GMN4</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2008 R2 (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">418.482</td>
+                                    <td class="num">1124.12</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TIR-02</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">31.485</td>
+                                    <td class="num">72.114</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TIR-04</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">31.587</td>
+                                    <td class="num">72.108</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TOM-02</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">40.461</td>
+                                    <td class="num">56.109</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PleskSi4web</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">820.424</td>
+                                    <td class="num">932.164</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">RDV-FRONTEND</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">53.485</td>
+                                    <td class="num">116.103</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">SiHappyDev</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">CentOS 7 (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">20.0</td>
+                                    <td class="num">963.533</td>
+                                    <td class="num">1220.14</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical06-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">357.486</td>
+                                    <td class="num">524.109</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical10-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">450.984</td>
+                                    <td class="num">724.104</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>90</strong></td>
+                                    <td class="num"><strong>296.0</strong></td>
+                                    <td class="num"><strong>3570.334</strong></td>
+                                    <td class="num"><strong>6261.828</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.50
+                        <span class="acc-tag">12 VM accese</span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">chat.tifosinrete.it</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">36.132</td>
+                                    <td class="num">108.114</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">CMS-db</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">46.695</td>
+                                    <td class="num">104.109</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">CMS-strapi</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">36.643</td>
+                                    <td class="num">104.109</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">DBCS-01-TIR</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">64.796</td>
+                                    <td class="num">166.107</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Firewall</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Other 2.6.x Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">35.485</td>
+                                    <td class="num">366.093</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">PHP-FPM-TOM-01</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">40.141</td>
+                                    <td class="num">56.111</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">RDV-DB</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">45.862</td>
+                                    <td class="num">108.105</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">reverseproxy-01-exVarnishDev</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">38.578</td>
+                                    <td class="num">88.124</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">SiHappy</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">CentOS 7 (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">20.0</td>
+                                    <td class="num">683.963</td>
+                                    <td class="num">1200.144</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">VarnishCache</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">46.182</td>
+                                    <td class="num">119.308</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical00-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">577.421</td>
+                                    <td class="num">724.109</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Vertical12-plesk</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">4</td>
+                                    <td class="num">24.0</td>
+                                    <td class="num">314.65</td>
+                                    <td class="num">524.091</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>46</strong></td>
+                                    <td class="num"><strong>164.0</strong></td>
+                                    <td class="num"><strong>1966.548</strong></td>
+                                    <td class="num"><strong>3668.524</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <br />
+            
+        </div>
+
+        <!-- ── Tabella VM Spente ──────────────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">VM Spente per Host</div>
+            
+            <div class="dc-label">pcc-92-222-223-54_datacenter3405</div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.51
+                        <span class="acc-tag" style="background:rgba(255,184,0,0.12); color:var(--warning);">
+                            5 VM spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">CAL</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">29.872</td>
+                                    <td class="num">104.552</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Firewall - Spare Version</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Other 2.6.x Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">22.115</td>
+                                    <td class="num">54.332</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Plesk-Custom</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">8</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">855.688</td>
+                                    <td class="num">1132.455</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">VAS-OpenVas</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">13.151</td>
+                                    <td class="num">116.554</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">VEEAM-HELPER-02</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">12.61</td>
+                                    <td class="num">36.572</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>17</strong></td>
+                                    <td class="num"><strong>60.0</strong></td>
+                                    <td class="num"><strong>933.436</strong></td>
+                                    <td class="num"><strong>1444.465</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.50
+                        <span class="acc-tag" style="background:rgba(255,184,0,0.12); color:var(--warning);">
+                            6 VM spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Discovery</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">1.0</td>
+                                    <td class="num">32.665</td>
+                                    <td class="num">101.18</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">TEMPLATE-PROGETTO-CALCIO</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">4.214</td>
+                                    <td class="num">18.554</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">TEMPLATE-UBUNTU</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">1.0</td>
+                                    <td class="num">8.561</td>
+                                    <td class="num">101.551</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">TEST-WINDOWS2012-R2-VEEAM</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2012 (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">6.675</td>
+                                    <td class="num">44.572</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">TIR-CENTENG</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Other 4.x or later Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">2.204</td>
+                                    <td class="num">108.181</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">VAS-ThreatMapper</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">54.0</td>
+                                    <td class="num">116.554</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>14</strong></td>
+                                    <td class="num"><strong>32.0</strong></td>
+                                    <td class="num"><strong>108.319</strong></td>
+                                    <td class="num"><strong>490.592</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.53
+                        <span class="acc-tag" style="background:rgba(255,184,0,0.12); color:var(--warning);">
+                            5 VM spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Italyjournal</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">117.296</td>
+                                    <td class="num">216.335</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">LINUX-PREPROD-ENV</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">36.177</td>
+                                    <td class="num">108.552</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">RDV-ADMIN-TEST</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">102.396</td>
+                                    <td class="num">204.195</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">RDV-FRONTEND-TEST</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">45.439</td>
+                                    <td class="num">108.553</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">TEMPLATE-KUBERNETES</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">0</td>
+                                    <td class="num">0.0</td>
+                                    <td class="num">5.216</td>
+                                    <td class="num">25.398</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>10</strong></td>
+                                    <td class="num"><strong>36.0</strong></td>
+                                    <td class="num"><strong>306.524</strong></td>
+                                    <td class="num"><strong>663.033</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.52
+                        <span class="acc-tag" style="background:rgba(255,184,0,0.12); color:var(--warning);">
+                            2 VM spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">PLESK-PO</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">6</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">768.227</td>
+                                    <td class="num">916.56</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">VAS-kali</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Other Linux (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">16.0</td>
+                                    <td class="num">49.063</td>
+                                    <td class="num">116.556</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>10</strong></td>
+                                    <td class="num"><strong>32.0</strong></td>
+                                    <td class="num"><strong>817.29</strong></td>
+                                    <td class="num"><strong>1033.116</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 172.18.60.55
+                        <span class="acc-tag" style="background:rgba(255,184,0,0.12); color:var(--warning);">
+                            1 VM spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">RDV-ADMIN_restored</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">10.0</td>
+                                    <td class="num">103.874</td>
+                                    <td class="num">210.552</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>2</strong></td>
+                                    <td class="num"><strong>10.0</strong></td>
+                                    <td class="num"><strong>103.874</strong></td>
+                                    <td class="num"><strong>210.552</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <br />
+            
+            
+        </div>
+
+
+    </div><!-- /page -->
+
+    <footer
+        style="text-align:center; padding:1.5rem; font-size:0.75rem; color:var(--muted); border-top:1px solid var(--border); margin-top:2rem;">
+        Var Group — RVTools Analyzer &nbsp;·&nbsp; Report ID: 1dcf817d
+        &nbsp;·&nbsp; Dati conservati per 180 giorni<br>
+        Andrea Beggi - andrea.beggi@vargroup.com
+    </footer>
+
+</body>
+
+</html>
