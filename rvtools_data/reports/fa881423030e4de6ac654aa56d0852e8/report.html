@@ -1,0 +1,1192 @@
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Report RVTools — BCspa1.xlsx</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --primary: {
+                    {
+                    custom.primary_color | default('#0055b8')
+                }
+            }
+
+            ;
+
+            --accent: {
+                    {
+                    custom.accent_color | default('#1268FB')
+                }
+            }
+
+            ;
+            --bg: #0a0e1a;
+            --surface: #111827;
+            --surface2: #1a2236;
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f0f4ff;
+            --muted: #8b9ab5;
+            --success: #00c9a7;
+            --warning: #ffb800;
+            --danger: #ff4d6a;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        .pdf-header {
+            display: none;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Manrope', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        /* ── Header ── */
+        .report-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .report-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            background: #0055b8 !important;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .logo-mark img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .report-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .report-meta {
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-top: 4px;
+        }
+
+        .meta-line {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 450px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(18, 104, 251, 0.3);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── Layout ── */
+        .page {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ── KPI Grid ── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 140px;
+        }
+
+        .kpi::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .kpi-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .kpi-value.on {
+            color: var(--success);
+        }
+
+        .kpi-value.off {
+            color: var(--warning);
+        }
+
+        .kpi-value.tot {
+            color: var(--text);
+        }
+
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Tables ── */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        thead th {
+            background: var(--surface2);
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 9px 12px;
+            text-align: left;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--border);
+        }
+
+        thead th.num {
+            text-align: right;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        tbody td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tbody td.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tfoot td {
+            font-weight: 700;
+            background: var(--surface2);
+            color: var(--text);
+            padding: 9px 12px;
+        }
+
+        tfoot td.num {
+            text-align: right;
+        }
+
+        /* ── Summary table special rows ── */
+        tr.row-on td {
+            color: var(--success);
+        }
+
+        tr.row-off td {
+            color: var(--warning);
+        }
+
+        tr.row-tot td {
+            color: var(--text);
+            font-weight: 700;
+            background: var(--surface2);
+        }
+
+        /* ── Badges ── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .badge-on {
+            background: rgba(0, 201, 167, 0.15);
+            color: var(--success);
+        }
+
+        .badge-off {
+            background: rgba(255, 184, 0, 0.15);
+            color: var(--warning);
+        }
+
+        /* ── Accordion ── */
+        .accordion {
+            margin-bottom: 0.5rem;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .acc-toggle {
+            width: 100%;
+            background: var(--surface2);
+            border: none;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1.1rem;
+            transition: background 0.2s;
+        }
+
+        .acc-toggle:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .acc-arrow {
+            transition: transform 0.25s;
+            color: var(--muted);
+        }
+
+        .acc-toggle.open .acc-arrow {
+            transform: rotate(180deg);
+        }
+
+        .acc-body {
+            display: none;
+            padding: 1rem;
+            background: var(--surface);
+        }
+
+        .acc-body.open {
+            display: block;
+        }
+
+        .acc-tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: rgba(18, 104, 251, 0.15);
+            color: var(--accent);
+            margin-left: 8px;
+        }
+
+        .dc-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin: -0.25rem 0 0.5rem;
+        }
+
+        .host-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .host-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+        }
+
+        .host-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .host-stats {
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .host-stat span {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+
+        @media (max-width:640px) {
+            .report-header {
+                padding: 0.75rem 1rem;
+            }
+
+            .page {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Sticky Header ────────────────────────────────────────────────────── -->
+    <header class="report-header">
+        <div class="report-header-left">
+            <div class="logo-mark">
+                VG
+            </div>
+            <div>
+                <div class="report-title">BANCHERO_1</div>
+                <div class="report-meta">
+                    <div class="meta-line">Data: 23/02/2026 14:49</div>
+                    <div class="meta-line" title="BCspa1.xlsx">Source: BCspa1.xlsx</div>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="/" class="btn btn-outline">Home</a>
+            <a href="/history" class="btn btn-outline">🕓 Storico</a>
+        </div>
+    </header>
+
+    <div class="page">
+
+        <!-- ── KPI Summary ─────────────────────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">Riepilogo</div>
+            <div class="kpi-grid">
+                <div class="kpi">
+                    <div class="kpi-value on">5</div>
+                    <div class="kpi-label">VM Accese</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value off">14</div>
+                    <div class="kpi-label">VM Spente</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot">19</div>
+                    <div class="kpi-label">Totale VM</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot" style="font-size:1.6rem;">5.615
+                    </div>
+                    <div class="kpi-label">Storage in uso (GB)</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot" style="font-size:1.6rem;">5.737
+                    </div>
+                    <div class="kpi-label">Storage prov. (GB)</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-value tot">1</div>
+                    <div class="kpi-label">Datacenter / Host (2)</div>
+                </div>
+            </div>
+            <!-- Breakdown OS VM Accese (Drill-down) -->
+            <div style="margin-top: 1.5rem;">
+                <div class="section-title" style="font-size:0.85rem; color:var(--muted);">Dettaglio Sistemi Operativi
+                    (VM Accese)</div>
+
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+
+                    
+                    
+                    
+                    
+                    
+
+                    <div class="accordion">
+                        <button class="acc-toggle"
+                            onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                            <span>
+                                <span
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#4facfe; margin-right:8px;"></span>
+                                Windows
+                                <span class="acc-tag">4 VM</span>
+                            </span>
+                            <span class="acc-arrow">▼</span>
+                        </button>
+                        <div class="acc-body">
+                            
+                            <div class="table-wrap" style="max-height: 300px; overflow-y: auto; border:none;">
+                                <table style="font-size: 0.75rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>VM</th>
+                                            <th>OS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">Banchero16Bckp_restored</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows Server 2016 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">BcFin16Bckp</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows Server 2016 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">BcIns16Bckp</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows Server 2016 (64-bit)</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">RMS ENI</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">Microsoft Windows 7 (64-bit)</td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+
+                    <div class="accordion">
+                        <button class="acc-toggle"
+                            onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                            <span>
+                                <span
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#f093fb; margin-right:8px;"></span>
+                                Linux
+                                <span class="acc-tag">1 VM</span>
+                            </span>
+                            <span class="acc-arrow">▼</span>
+                        </button>
+                        <div class="acc-body">
+                            
+                            <div class="table-wrap" style="max-height: 300px; overflow-y: auto; border:none;">
+                                <table style="font-size: 0.75rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>VM</th>
+                                            <th>OS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr>
+                                            <td style="font-weight:600;">bcvcent02</td>
+                                            <td style="color:var(--muted); font-size:0.75rem;">SUSE Linux Enterprise 11 (64-bit)</td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+
+                    <div class="accordion">
+                        <button class="acc-toggle"
+                            onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                            <span>
+                                <span
+                                    style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--muted); margin-right:8px;"></span>
+                                Altro
+                                <span class="acc-tag">0 VM</span>
+                            </span>
+                            <span class="acc-arrow">▼</span>
+                        </button>
+                        <div class="acc-body">
+                            
+                            <div style="padding:1rem; text-align:center; color:var(--muted); font-size:0.8rem;">Nessuna
+                                VM in questa categoria</div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                    <br>
+
+                    <!-- Conteggio Sistemi Operativi (Dettaglio) -->
+                    <div style="margin-top: 2rem;">
+                        <div class="accordion">
+                            <button class="acc-toggle"
+                                onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                                <span
+                                    style="font-size: 0.85rem; font-weight: 700; color: var(--muted); letter-spacing: 0.05em;">
+                                    Dettaglio Sistemi Operativi (VM Accese)
+                                </span>
+                                <span class="acc-arrow">▼</span>
+                            </button>
+                            <div class="acc-body">
+                                <div class="table-wrap"
+                                    style="max-height: 400px; overflow-y: auto; border:none; margin-top: 1rem;">
+                                    <table style="font-size: 0.75rem;">
+                                        <thead>
+                                            <tr>
+                                                <th>Sistema Operativo</th>
+                                                <th style="text-align:right; width: 100px;">Conteggio</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            <tr>
+                                                <td style="font-weight:600;">Microsoft Windows Server 2016 (64-bit)</td>
+                                                <td style="text-align:right; font-weight:700; color:var(--primary);">3</td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td style="font-weight:600;">SUSE Linux Enterprise 11 (64-bit)</td>
+                                                <td style="text-align:right; font-weight:700; color:var(--primary);">1</td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td style="font-weight:600;">Microsoft Windows 7 (64-bit)</td>
+                                                <td style="text-align:right; font-weight:700; color:var(--primary);">1</td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Tabella riepilogo (Accese / Spente / Totale) ─────────────────────── -->
+        <div class="section">
+            <div class="section-title">Tabella Riepilogo</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stato VM</th>
+                            <th class="num">Q.tà</th>
+                            <th class="num">CPU (vCPU)</th>
+                            <th class="num">RAM [GB]</th>
+                            <th class="num">Storage in uso [GB]</th>
+                            <th class="num">Storage prov. [GB]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-on">
+                            <td><span class="badge badge-on">Accese</span></td>
+                            <td class="num">5</td>
+                            <td class="num">27</td>
+                            <td class="num">112</td>
+                            <td class="num">878</td>
+                            <td class="num">878</td>
+                        </tr>
+                        <tr class="row-off">
+                            <td><span class="badge badge-off">Spente</span></td>
+                            <td class="num">14</td>
+                            <td class="num">62</td>
+                            <td class="num">116</td>
+                            <td class="num">4.737</td>
+                            <td class="num">4.859</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Totale</strong></td>
+                            <td class="num"><strong>19</strong></td>
+                            <td class="num"><strong>89</strong></td>
+                            <td class="num"><strong>228</strong></td>
+                            <td class="num"><strong>5.615</strong></td>
+                            <td class="num"><strong>5.737</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── Vista per Datacenter ──────────────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">Per Datacenter</div>
+            
+            <div class="accordion">
+                <button class="acc-toggle open"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🏢 BC-datacenter1
+                        <span class="acc-tag">
+                            5 accese &nbsp;/&nbsp; 14 spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body open">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Stato</th>
+                                    <th class="num">Q.tà</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Storage in uso [GB]</th>
+                                    <th class="num">Storage prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row-on">
+                                    <td><span class="badge badge-on">Accese</span></td>
+                                    <td class="num">5</td>
+                                    <td class="num">27</td>
+                                    <td class="num">112</td>
+                                    <td class="num">878</td>
+                                    <td class="num">878</td>
+                                </tr>
+                                <tr class="row-off">
+                                    <td><span class="badge badge-off">Spente</span></td>
+                                    <td class="num">14</td>
+                                    <td class="num">62</td>
+                                    <td class="num">116</td>
+                                    <td class="num">4.737</td>
+                                    <td class="num">4.859</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td><strong>Totale</strong></td>
+                                    <td class="num"><strong>19</strong></td>
+                                    <td class="num"><strong>89</strong></td>
+                                    <td class="num"><strong>228</strong></td>
+                                    <td class="num"><strong>5.615</strong></td>
+                                    <td class="num"><strong>5.737</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- ── Vista per Host (VM accese) ─────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">VM Accese per Host</div>
+            
+            <div class="dc-label">BC-datacenter1</div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 192.168.1.39
+                        <span class="acc-tag">3 VM accese</span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">Banchero16Bckp_restored</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2016 (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">182.121</td>
+                                    <td class="num">182.121</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">BcFin16Bckp</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2016 (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">182.138</td>
+                                    <td class="num">182.138</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">RMS ENI</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows 7 (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">208.149</td>
+                                    <td class="num">208.149</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>17</strong></td>
+                                    <td class="num"><strong>72.0</strong></td>
+                                    <td class="num"><strong>572.408</strong></td>
+                                    <td class="num"><strong>572.408</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 192.168.1.40
+                        <span class="acc-tag">2 VM accese</span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">BcIns16Bckp</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2016 (64-bit)</td>
+                                    <td class="num">8</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">182.192</td>
+                                    <td class="num">182.192</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="font-weight:600;">bcvcent02</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">SUSE Linux Enterprise 11 (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">123.375</td>
+                                    <td class="num">123.375</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>10</strong></td>
+                                    <td class="num"><strong>40.0</strong></td>
+                                    <td class="num"><strong>305.567</strong></td>
+                                    <td class="num"><strong>305.567</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <br />
+            
+        </div>
+
+        <!-- ── Tabella VM Spente ──────────────────────────────────────────────── -->
+        <div class="section">
+            <div class="section-title">VM Spente per Host</div>
+            
+            <div class="dc-label">BC-datacenter1</div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 192.168.1.40
+                        <span class="acc-tag" style="background:rgba(255,184,0,0.12); color:var(--warning);">
+                            13 VM spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">banchero12fsSRV</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2012 (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">1080.108</td>
+                                    <td class="num">1088.43</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Banchero16Sfront</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2016 (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">100.054</td>
+                                    <td class="num">108.375</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">banchero16www</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2016 (64-bit)</td>
+                                    <td class="num">16</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">250.304</td>
+                                    <td class="num">259.087</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Banchero8exch01</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2008 R2 (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">6.0</td>
+                                    <td class="num">59.293</td>
+                                    <td class="num">65.631</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Banchero8exch03</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Microsoft Windows Server 2008 R2 (64-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">850.342</td>
+                                    <td class="num">882.679</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Banchero8sc01_new</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">1</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">60.138</td>
+                                    <td class="num">64.363</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Banchero8sc03</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">4</td>
+                                    <td class="num">4.0</td>
+                                    <td class="num">50.055</td>
+                                    <td class="num">54.481</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Banchero8sql01</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">8</td>
+                                    <td class="num">32.0</td>
+                                    <td class="num">1118.175</td>
+                                    <td class="num">1150.66</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Banchero8sql02</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">8</td>
+                                    <td class="num">8.0</td>
+                                    <td class="num">1107.752</td>
+                                    <td class="num">1116.238</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">CheckMK</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (64-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">1.0</td>
+                                    <td class="num">25.0</td>
+                                    <td class="num">26.21</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">MobilePostfix</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Ubuntu Linux (32-bit)</td>
+                                    <td class="num">1</td>
+                                    <td class="num">0.5</td>
+                                    <td class="num">8.043</td>
+                                    <td class="num">8.752</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Ns_citrix01</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Oracle Solaris 10 (64-bit)</td>
+                                    <td class="num">2</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">20.063</td>
+                                    <td class="num">22.311</td>
+                                </tr>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">sr-ready.cloudconnect-ac.tim.it_4y2ftz</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">Other (32-bit)</td>
+                                    <td class="num">4</td>
+                                    <td class="num">1.0</td>
+                                    <td class="num">0.0</td>
+                                    <td class="num">1.321</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>61</strong></td>
+                                    <td class="num"><strong>114.5</strong></td>
+                                    <td class="num"><strong>4729.327</strong></td>
+                                    <td class="num"><strong>4848.538</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion" style="margin-bottom:0.4rem;">
+                <button class="acc-toggle"
+                    onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span>
+                        🖥 192.168.1.39
+                        <span class="acc-tag" style="background:rgba(255,184,0,0.12); color:var(--warning);">
+                            1 VM spente
+                        </span>
+                    </span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>OS</th>
+                                    <th class="num">vCPU</th>
+                                    <th class="num">vRAM [GB]</th>
+                                    <th class="num">Disco uso [GB]</th>
+                                    <th class="num">Disco prov. [GB]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr style="opacity:0.8;">
+                                    <td style="font-weight:600;">Cisco Wireless Lan Controller</td>
+                                    <td style="color:var(--muted); font-size:0.8rem;">—</td>
+                                    <td class="num">1</td>
+                                    <td class="num">2.0</td>
+                                    <td class="num">8.059</td>
+                                    <td class="num">10.269</td>
+                                </tr>
+                                
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2"><strong>Totale host</strong></td>
+                                    <td class="num"><strong>1</strong></td>
+                                    <td class="num"><strong>2.0</strong></td>
+                                    <td class="num"><strong>8.059</strong></td>
+                                    <td class="num"><strong>10.269</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <br />
+            
+            
+        </div>
+
+
+    </div><!-- /page -->
+
+    <footer
+        style="text-align:center; padding:1.5rem; font-size:0.75rem; color:var(--muted); border-top:1px solid var(--border); margin-top:2rem;">
+        Var Group — RVTools Analyzer &nbsp;·&nbsp; Dati conservati per 180
+        giorni<br>
+        Andrea Beggi - andrea.beggi@vargroup.com
+    </footer>
+
+</body>
+
+</html>
