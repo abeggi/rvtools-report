@@ -45,6 +45,3 @@ Per spostare l'applicazione su un nuovo server:
 1. Copia il file `docker-compose.yml`.
 2. (Opzionale) Copia la cartella `rvtools_data` per mantenere lo storico dei report e le impostazioni.
 3. Esegui `docker-compose up -d`. L'immagine verrà scaricata automaticamente da Docker Hub.
-
-## Licenza
-Proprietario - Var Group
