@@ -536,10 +536,45 @@
                     <div class="kpi-label">Datacenter / Host ({{ host_stats | length }})</div>
                 </div>
             </div>
-            <!-- Breakdown OS VM Accese (Drill-down) -->
-            <div style="margin-top: 1.5rem;">
-                <div class="section-title" style="font-size:0.85rem; color:var(--muted);">Dettaglio Sistemi Operativi
-                    (VM Accese)</div>
+            <!-- ── Riepilogo Versioni OS ─────────────────────────────────────────── -->
+            <div class="section">
+                <div class="section-title">Riepilogo Versioni Sistemi Operativi (VM Accese)</div>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+                    {% for cat in [('windows', 'Windows', '#4facfe'), ('linux', 'Linux', '#f093fb'), ('other', 'Altro',
+                    'var(--muted)')] %}
+                    {% set cat_key = cat[0] %}
+                    {% set cat_label = cat[1] %}
+                    {% set cat_color = cat[2] %}
+                    {% set os_dist_cat = summary_on.os_dist[cat_key] %}
+                    <div class="host-card" style="border-top: 3px solid {{ cat_color }};">
+                        <div class="host-name" style="color: {{ cat_color }}; margin-bottom: 0.5rem;">{{ cat_label }}
+                        </div>
+                        {% if os_dist_cat %}
+                        <div class="table-wrap" style="border:none;">
+                            <table style="font-size: 0.8rem;">
+                                <tbody>
+                                    {% for os_ver, count in os_dist_cat.items() %}
+                                    <tr>
+                                        <td style="padding: 4px 0; font-weight: 500;">{{ os_ver }}</td>
+                                        <td class="num" style="padding: 4px 0; color: var(--accent);">{{ count }} VM
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div style="font-size: 0.75rem; color: var(--muted); padding: 0.5rem 0;">Nessuna VM</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- ── Dettaglio Sistemi Operativi (Drill-down) ─────────────────────── -->
+            <div class="section">
+                <div class="section-title">Dettaglio Sistemi Operativi (VM Accese)</div>
 
                 <div
                     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
@@ -564,12 +599,12 @@
                         </button>
                         <div class="acc-body">
                             {% if vms_in_cat %}
-                            <div class="table-wrap" style="max-height: 300px; overflow-y: auto; border:none;">
+                            <div class="table-wrap" style="max-height: 250px; overflow-y: auto; border:none;">
                                 <table style="font-size: 0.75rem;">
                                     <thead>
                                         <tr>
                                             <th>VM</th>
-                                            <th>OS</th>
+                                            <th>OS (Raw)</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -56,6 +56,85 @@ def _safe_str(val, default=""):
     return str(val).strip() if val is not None else default
 
 
+import re
+
+def _simplify_os_name(os_name, family):
+    if not os_name:
+        return "N/D"
+    
+    # Rimuovi (32-bit), (64-bit) etc.
+    os_name_clean = re.sub(r"\(.*?\d+-bit\)", "", os_name, flags=re.IGNORECASE).strip()
+    os_name_low = os_name_clean.lower()
+    
+    if family == "windows":
+        # Microsoft Windows Server 2016 -> Windows Server 2016
+        match = re.search(r"server\s+(\d{4}(?:\s+r2)?)", os_name_low)
+        if match:
+            return f"Windows Server {match.group(1).upper()}"
+        
+        match = re.search(r"windows\s+(\d+)", os_name_low)
+        if match:
+            return f"Windows {match.group(1)}"
+        
+        if "windows" in os_name_low:
+            if "server" in os_name_low:
+                return "Windows Server (Other)"
+            return "Windows (Other)"
+        return "N/D"
+
+    elif family == "linux":
+        distros = ["ubuntu", "red hat", "centos", "debian", "suse", "photon", "oracle linux"]
+        for d in distros:
+            if d in os_name_low:
+                # Cerca versione dopo il nome della distro
+                parts = re.split(re.escape(d), os_name_low, maxsplit=1)
+                after = parts[1] if len(parts) > 1 else ""
+                version_match = re.search(r"(\d+(?:\.\d+)?)", after)
+                if version_match:
+                    return f"{d.title()} {version_match.group(1)}"
+                return d.title()
+        
+        return "Linux (Other)"
+
+    return "Other"
+
+
+def vm_summary(vm_list):
+    os_counts = {"windows": 0, "linux": 0, "other": 0}
+    os_vms = {"windows": [], "linux": [], "other": []}
+    os_dist = {"windows": {}, "linux": {}, "other": {}}
+
+    for v in vm_list:
+        os_raw = (v.os or "").lower()
+        family = "other"
+        if "windows" in os_raw:
+            family = "windows"
+        elif any(k in os_raw for k in ["linux", "ubuntu", "debian", "centos", "red hat", "suse", "photon"]):
+            family = "linux"
+        
+        os_counts[family] += 1
+        os_vms[family].append(v)
+        
+        # Simplified OS name for the distribution report
+        simple_os = _simplify_os_name(v.os, family)
+        os_dist[family][simple_os] = os_dist[family].get(simple_os, 0) + 1
+
+    # Ordina i dizionari os_dist per nome OS
+    for fam in os_dist:
+        os_dist[fam] = dict(sorted(os_dist[fam].items()))
+
+    return {
+        "count": len(vm_list),
+        "tot_vcpu": sum(v.num_vcpu for v in vm_list),
+        "tot_vram_gb": round(sum(v.memory_mb for v in vm_list) / 1024, 3),
+        "tot_disk_used_gb": round(sum(v.disk_used_gb for v in vm_list), 3),
+        "tot_disk_prov_gb": round(sum(v.disk_provisioned_gb for v in vm_list), 3),
+        "os_counts": os_counts,
+        "os_vms": os_vms,
+        "os_dist": os_dist,
+    }
+
+
 def parse_rvtools(filepath: str) -> dict:
     """
     Legge il file RVTools xlsx e restituisce un dict con tutte le statistiche.
@@ -203,31 +282,6 @@ def parse_rvtools(filepath: str) -> dict:
     # ---- Calcola summary globale ----
     vms_on = [v for v in vms if v.power_state == "poweredon"]
     vms_off = [v for v in vms if v.power_state != "poweredon"]
-
-    def vm_summary(vm_list):
-        os_counts = {"windows": 0, "linux": 0, "other": 0}
-        os_vms = {"windows": [], "linux": [], "other": []}
-        for v in vm_list:
-            os = (v.os or "").lower()
-            if "windows" in os:
-                os_counts["windows"] += 1
-                os_vms["windows"].append(v)
-            elif any(k in os for k in ["linux", "ubuntu", "debian", "centos", "red hat", "suse", "photon"]):
-                os_counts["linux"] += 1
-                os_vms["linux"].append(v)
-            else:
-                os_counts["other"] += 1
-                os_vms["other"].append(v)
-
-        return {
-            "count": len(vm_list),
-            "tot_vcpu": sum(v.num_vcpu for v in vm_list),
-            "tot_vram_gb": round(sum(v.memory_mb for v in vm_list) / 1024, 3),
-            "tot_disk_used_gb": round(sum(v.disk_used_gb for v in vm_list), 3),
-            "tot_disk_prov_gb": round(sum(v.disk_provisioned_gb for v in vm_list), 3),
-            "os_counts": os_counts,
-            "os_vms": os_vms,
-        }
 
     summary_on = vm_summary(vms_on)
     summary_off = vm_summary(vms_off)
