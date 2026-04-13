@@ -14,7 +14,8 @@
 
 - L'app crea un report che elenca le VM accese e spente, divise per host e per datacenter.
 - Per le VM, calcola: tot vCPU, tot vRAM, tot Disk (Used e Provisioned).
-- **Breakdown OS**: Per le VM accese, fornisce un riepilogo suddiviso tra Windows, Linux e Altro, con possibilità di **drill-down** per visualizzare l'elenco delle VM per ogni categoria.
+- **Breakdown OS**: Per le VM accese, fornisce un riepilogo suddiviso tra Windows, Linux e Altro.
+- **Riepilogo Versioni**: Include una sezione dedicata che aggrega le VM per versione specifica (es: "Windows Server 2016", "Ubuntu 20.04"). I nomi sono normalizzati rimuovendo l'architettura (es: "(64-bit)") e assicurando che per Windows sia sempre presente la dicitura **"Server"** se applicabile.
 - **Formattazione**: Tutti i numeri utilizzano la separazione italiana (punto per le migliaia, es: `1.234`). Non sono presenti decimali in quanto i valori sono arrotondati all'unità.
 - **Riepilogo Dinamico**: Il report e lo storico mostrano tessere di riepilogo (KPI) incolonnate verticalmente per la massima chiarezza.
 
@@ -24,7 +25,7 @@ Il report finale è marchiato con il logo e i colori scelti nelle impostazioni.
 È inoltre possibile personalizzare il **Titolo** e la **Data** del report durante la fase di upload.
 Tutte le metriche numeriche (CPU, RAM, Disk) sono **arrotondate all'unità** per una migliore leggibilità.
 Le metriche di business sono chiaramente separate per stato della VM (Accesa/Spenta).
-Il dettaglio dei sistemi operativi include il nome della VM e la versione specifica (**Guest OS**) per ogni macchina virtuale.
+Il dettaglio dei sistemi operativi include il nome della VM, la versione semplificata per il riepilogo e la versione originale (**Guest OS**) per ogni macchina virtuale nel drill-down.
 - **Branding**: Segue le linee guida **Var Group** (Manrope font, Blu digitale `#1268FB`, Blu primario `#0055b8`).
 - Il logo e i colori sono personalizzabili tramite la pagina `/settings`.
 

@@ -12,8 +12,9 @@ from pathlib import Path
 
 from flask import (
     Flask, request, redirect, url_for,
-    send_file, render_template, abort, jsonify
+    send_file, render_template, abort, jsonify, make_response
 )
+from weasyprint import HTML
 from apscheduler.schedulers.background import BackgroundScheduler
 from parser import parse_rvtools
 from report_builder import build_report
@@ -182,9 +183,38 @@ def upload():
 @app.route("/report/<report_id>")
 def view_report(report_id: str):
     html_path = REPORTS_DIR / report_id / "report.html"
+    return html_path.read_text(encoding="utf-8")
+
+
+@app.route("/report/<report_id>/pdf")
+def export_pdf(report_id: str):
+    html_path = REPORTS_DIR / report_id / "report.html"
     if not html_path.exists():
         abort(404)
-    return html_path.read_text(encoding="utf-8")
+    
+    html_content = html_path.read_text(encoding="utf-8")
+    
+    # Per WeasyPrint, dobbiamo specificare la base_url per caricare immagini e font locali
+    # Usiamo il percorso assoluto della cartella app
+    base_url = str(BASE_DIR)
+    
+    # Genera PDF
+    pdf_bytes = HTML(string=html_content, base_url=base_url).write_pdf()
+    
+    # Recupera metadati per un nome file più parlante
+    meta = get_report_meta(report_id)
+    settings = get_settings()
+    customer = settings.get("company_name", "VarGroup").replace(" ", "_").replace("/", "-")
+    title = meta.get("custom_title", "Analisi_RVTools").replace(" ", "_") if meta else "Analisi_RVTools"
+    date_str = datetime.now().strftime("%Y%m%d_%H%M")
+    
+    filename = f"{customer}_{title}_{date_str}.pdf"
+    
+    response = make_response(pdf_bytes)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = f"inline; filename={filename}"
+    
+    return response
 
 
 

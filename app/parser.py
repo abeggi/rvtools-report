@@ -22,6 +22,7 @@ class VMInfo:
     disk_provisioned_gb: float  # Storage provisioned [GB]
     num_vcpu: int             # vCPU (uguale a num_cpu per RVTools)
     os: str
+    simple_os: str = "N/D"
 
 
 @dataclass
@@ -228,6 +229,7 @@ def parse_rvtools(filepath: str) -> dict:
             disk_provisioned_gb=round(disk_prov_gb, 3),
             num_vcpu=cpu,
             os=os_name,
+            simple_os=_simplify_os_name(os_name, "windows" if "windows" in os_name.lower() else ("linux" if any(k in os_name.lower() for k in ["linux", "ubuntu", "debian", "centos", "red hat", "suse", "photon"]) else "other"))
         ))
 
     # ---- Legge vHost (host fisici) ----

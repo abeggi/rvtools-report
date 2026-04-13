@@ -1,0 +1,26 @@
+🚀 RVTools Analyzer avviato su http://0.0.0.0:8080
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.86.25:8080
+[33mPress CTRL+C to quit[0m
+192.168.86.65 - - [13/Apr/2026 21:16:29] "GET /history HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:16:32] "[32mPOST /history/899977d20d1247b5821bd65d32b1b50c/delete HTTP/1.1[0m" 302 -
+192.168.86.65 - - [13/Apr/2026 21:16:32] "GET /history HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:16:36] "GET /history HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:16:36] "GET /history HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:16:37] "GET /history HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:16:37] "GET /history HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:16:37] "GET /history HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:16:39] "GET / HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:16:49] "[32mPOST /upload HTTP/1.1[0m" 302 -
+192.168.86.65 - - [13/Apr/2026 21:16:49] "GET /report/91e3c3a69d434946bb9e5eb8fd5d94bd HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:16:49] "[33mGET /rvtools-report/app/templates/logo-vg-3x.png HTTP/1.1[0m" 404 -
+192.168.86.65 - - [13/Apr/2026 21:16:52] "GET /report/91e3c3a69d434946bb9e5eb8fd5d94bd/pdf HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:18:42] "GET / HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:18:43] "GET /history HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:18:45] "[32mPOST /history/91e3c3a69d434946bb9e5eb8fd5d94bd/delete HTTP/1.1[0m" 302 -
+192.168.86.65 - - [13/Apr/2026 21:18:45] "GET /history HTTP/1.1" 200 -
+192.168.86.65 - - [13/Apr/2026 21:18:49] "GET / HTTP/1.1" 200 -

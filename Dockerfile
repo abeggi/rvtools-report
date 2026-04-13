@@ -1,30 +1,47 @@
 FROM python:3.11-slim
 
-# Set work directory
+# Imposta la directory di lavoro
 WORKDIR /app
 
-# Install system dependencies if needed (e.g., for pandas/numpy)
+# Installa le dipendenze di sistema
+# build-essential e python3-dev sono utili per pacchetti che richiedono compilazione
+# weasyprint richiede pango, cairo e altre librerie grafiche per la generazione dei PDF
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    python3-dev \
+    libffi-dev \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
+    libharfbuzz0b \
+    libpangocairo-1.0-0 \
+    libglib2.0-0 \
+    libgobject-2.0-0 \
+    libcairo2 \
+    libfontconfig1 \
+    libjpeg-dev \
+    libopenjp2-7-dev \
+    shared-mime-info \
+    fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install
+# Copia i requisiti e installa le dipendenze Python
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copia il codice dell'applicazione
 COPY app/ /app/
 
-# Environment variables
+# Variabili d'ambiente
 ENV DATA_DIR=/app/data
 ENV FLASK_APP=app:app
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
-# Create data directory and subdirectories
+# Crea le directory per i dati se non esistono
 RUN mkdir -p /app/data/uploads /app/data/reports
 
-# Expose the application port
+# Espone la porta dell'applicazione
 EXPOSE 8080
 
-# Command to run the application using Gunicorn
+# Comando per avviare l'applicazione con Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "4", "app:app"]

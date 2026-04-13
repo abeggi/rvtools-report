@@ -4,10 +4,12 @@ Uno strumento professionale per l'analisi e la visualizzazione degli export RVTo
 
 ## Caratteristiche
 - Analisi automatica di file `rvtools.xlsx`.
-- Report HTML dettagliati con statistiche VM (Accese/Spente/Totale).
-- Breakdown dei Sistemi Operativi con drill-down.
+- Report HTML interattivi con statistiche VM dettagliate (Accese/Spente/Totale).
+- **Export PDF professionale** con branding aziendale e layout ottimizzato.
+- Breakdown dei Sistemi Operativi con drill-down e raggruppamento intelligente.
+- Impostazioni personalizzabili (Logo, Colori, Nome Azienda).
 - Persistenza dei dati tramite bind mount.
-- Interfaccia moderna basata sulle linee guida Var Group.
+- Interfaccia moderna responsive basata sulle linee guida Var Group.
 
 ## Come avviare con Docker
 
@@ -40,8 +42,11 @@ I tuoi dati (uploads e report) verranno salvati nella cartella locale `./rvtools
      abeggi/rvtools-vibe:latest
    ```
 
+## Nota Tecnica (PDF Export)
+L'applicazione utilizza **WeasyPrint** per la generazione dei PDF. Se si esegue l'app al di fuori di Docker, è necessario installare le dipendenze di sistema (pango, cairo, libffi). Il `Dockerfile` incluso gestisce già tutte queste dipendenze automaticamente.
+
 ## Migrazione su un altro server
 Per spostare l'applicazione su un nuovo server:
 1. Copia il file `docker-compose.yml`.
 2. (Opzionale) Copia la cartella `rvtools_data` per mantenere lo storico dei report e le impostazioni.
-3. Esegui `docker-compose up -d`. L'immagine verrà scaricata automaticamente da Docker Hub.
+3. Esegui `docker-compose up -d`. L'immagine verrà scaricata o ricostruita in base alla configurazione.

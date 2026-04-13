@@ -2,3 +2,6 @@ app/data/
 app/uploads/
 app/reports/
 app/settings.json
+# Ignora tutti i dati generati e gli upload
+rvtools_data/uploads/
+rvtools_data/reports/
