@@ -5,7 +5,7 @@ Uno strumento professionale per l'analisi e la visualizzazione degli export RVTo
 ## Caratteristiche
 - Analisi automatica di file `rvtools.xlsx`.
 - Report HTML interattivi con statistiche VM dettagliate (Accese/Spente/Totale).
-- **Export PDF professionale** con branding aziendale e layout ottimizzato.
+- Export PDF con branding aziendale e layout ottimizzato.
 - Breakdown dei Sistemi Operativi con drill-down e raggruppamento intelligente.
 - Impostazioni personalizzabili (Logo, Colori, Nome Azienda).
 - Interfaccia moderna responsive basata sulle linee guida Var Group.
