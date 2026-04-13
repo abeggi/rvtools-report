@@ -1,0 +1,30 @@
+[Unit]
+Description=RVTools Analyzer - Vibe Service
+After=network.target
+
+[Service]
+# Regola l'utente e il gruppo se non vuoi usare root
+User=root
+Group=root
+
+# Percorso della cartella del progetto
+WorkingDirectory=/rvtools-report/app
+
+# Variabili d'ambiente
+Environment="PYTHONPATH=/rvtools-report/app"
+Environment="DATA_DIR=/rvtools-report/rvtools_data"
+Environment="PYTHONUNBUFFERED=1"
+
+# Comando per avviare l'app con Gunicorn
+# Assicurati che gunicorn sia installato nel sistema o nel virtualenv
+ExecStart=/usr/bin/python3 -m gunicorn \
+    --workers 4 \
+    --bind 0.0.0.0:8080 \
+    --timeout 120 \
+    app:app
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -194,6 +194,11 @@ def export_pdf(report_id: str):
     
     html_content = html_path.read_text(encoding="utf-8")
     
+    # Per WeasyPrint, i percorsi che iniziano con / vengono cercati alla radice del filesystem.
+    # Trasformiamo i percorsi /static/ in static/ (relativi alla base_url)
+    html_content = html_content.replace('src="/static/', 'src="static/')
+    html_content = html_content.replace('href="/static/', 'href="static/')
+    
     # Per WeasyPrint, dobbiamo specificare la base_url per caricare immagini e font locali
     # Usiamo il percorso assoluto della cartella app
     base_url = str(BASE_DIR)

@@ -1,7 +1,22 @@
+# Data and Settings
+rvtools_data/
 app/data/
 app/uploads/
 app/reports/
 app/settings.json
-# Ignora tutti i dati generati e gli upload
-rvtools_data/uploads/
-rvtools_data/reports/
+*.pid
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
