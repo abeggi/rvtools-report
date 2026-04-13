@@ -1,4 +1,4 @@
-# RVTools Analyzer — Vibe
+# RVTools Analyzer
 
 Uno strumento professionale per l'analisi e la visualizzazione degli export RVTools.
 
