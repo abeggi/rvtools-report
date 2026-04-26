@@ -379,23 +379,15 @@
         }
 
         .logo-mark {
-            width: 40px;
-            height: 40px;
-            background: #0055b8 !important;
-            border-radius: 10px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 800;
-            color: #fff;
-            overflow: hidden;
+            flex-shrink: 0;
         }
 
         .logo-mark img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            height: 36px;
+            width: auto;
+            display: block;
+            border-radius: 8px;
         }
 
         .report-title {
@@ -775,7 +767,7 @@
     <header class="report-header">
         <div class="report-header-left">
             <div class="logo-mark">
-                {% if custom.logo_url %}<img src="{{ custom.logo_url }}" alt="Logo" />{% else %}VG{% endif %}
+                <img src="/static/logoVG.png" alt="Var Group" />
             </div>
             <div>
                 <div class="report-title">{{ report_title if report_title else (custom.company_name | default('Var
@@ -799,8 +791,8 @@
 
             <!-- LATO SINISTRO: Logo + Nome Cliente (spostato qui) -->
             <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
-                <img src="/rvtools-report/app/templates/logo-vg-3x.png"
-                    style="width: 4cm; height: auto; display: block;" />
+                <img src="/static/logoVG.png"
+                    style="height: 1cm; width: auto; display: block; border-radius: 4px;" />
                 <div style="font-size: 0.65rem; color: #64748b;">Confidenziale</div>
 
                 <!-- NOME CLIENTE: Spostato qui al posto di Var Group -->

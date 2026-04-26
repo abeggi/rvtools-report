@@ -62,6 +62,19 @@ Per far girare l'applicazione automaticamente all'avvio:
    sudo systemctl status rvtools-analyzer
    ```
 
+## Personalizzazione Logo
+
+Il repository include un logo placeholder (`app/static/logo.svg`) da sostituire con il logo della propria azienda.
+
+1. Prepara un'immagine PNG o SVG con sfondo bianco (dimensioni consigliate: circa 160×40px, oppure qualsiasi ratio orizzontale).
+2. Copiala in `app/static/` con il nome `logoVG.png`:
+   ```bash
+   cp /percorso/tuo/logo.png app/static/logoVG.png
+   ```
+3. Il file `logoVG.png` è in `.gitignore` e non verrà mai committato nel repository.
+
+> Se preferisci usare un nome file diverso, aggiornalo anche in `app/templates/base.html` e `app/templates/report.html` (cerca `logoVG.png`).
+
 ## Note Tecniche
 - L'esportazione PDF utilizza **WeasyPrint**. Se il layout appare sfasato, verifica che i font (fonts-liberation) siano installati correttamente.
 - I dati caricati e i report generati vengono salvati nella cartella definita da `DATA_DIR` (default: `rvtools_data`).

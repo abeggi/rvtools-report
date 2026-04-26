@@ -97,26 +97,15 @@
     }
 
     .navbar-brand .logo-mark {
-      width: 36px;
-      height: 36px;
-      background: #0055b8 !important;
-      border-radius: 8px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: white;
       flex-shrink: 0;
-      overflow: hidden;
     }
 
     .navbar-brand .logo-mark img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: white;
-      /* Ensure background if image is transparent */
+      height: 36px;
+      width: auto;
+      display: block;
+      border-radius: 8px;
     }
 
     .nav-links {
@@ -486,13 +475,8 @@
   <nav class="navbar">
     <a href="/" class="navbar-brand">
       <div class="logo-mark">
-        {% if settings.logo_url %}
-        <img src="{{ settings.logo_url }}" alt="Logo" />
-        {% else %}
-        VG
-        {% endif %}
+        <img src="/static/logoVG.png" alt="Var Group" />
       </div>
-      <span>{{ settings.company_name | default('RVTools Analyzer') }}</span>
     </a>
     <ul class="nav-links">
       <li><a href="/" class="{{ 'active' if request.path == '/' else '' }}">

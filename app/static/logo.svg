@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="40" viewBox="0 0 160 40">
+  <rect width="160" height="40" rx="6" fill="#ffffff"/>
+  <rect x="8" y="8" width="24" height="24" rx="4" fill="#0055b8"/>
+  <text x="20" y="25" font-family="Arial, sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle">CO</text>
+  <text x="90" y="26" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#1e293b" text-anchor="middle">Company Name</text>
+</svg>

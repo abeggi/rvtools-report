@@ -54,25 +54,12 @@
         cursor: pointer;
     }
 
-    .color-preview {
-        width: 32px;
-        height: 32px;
-        border-radius: 6px;
-        border: 1px solid var(--border);
-    }
-
     .preview-bar {
         height: 6px;
         border-radius: 3px;
         background: linear-gradient(90deg, var(--primary), var(--accent));
         margin-bottom: 1rem;
         transition: background 0.3s;
-    }
-
-    .current-logo {
-        max-height: 48px;
-        border-radius: 6px;
-        margin-bottom: 8px;
     }
 </style>
 {% endblock %}
@@ -81,11 +68,11 @@
 <div class="page">
     <div class="page-header">
         <h1>⚙ Impostazioni</h1>
-        <p>Personalizza il logo, i colori e il nome aziendale del report.</p>
+        <p>Personalizza i colori e il nome aziendale del report.</p>
     </div>
 
     <div class="settings-form">
-        <form action="/settings" method="post" enctype="multipart/form-data">
+        <form action="/settings" method="post">
 
             <div class="form-group">
                 <label class="form-label">Nome Azienda</label>
@@ -110,23 +97,6 @@
                         id="accentHex" style="font-family:monospace;" />
                 </div>
             </div>
-
-            <div class="form-group">
-                <label class="form-label">Logo Aziendale (PNG/SVG, opzionale)</label>
-                {% if settings.logo_url %}
-                <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 1rem;">
-                    <img src="{{ settings.logo_url }}" class="current-logo" alt="Logo attuale"
-                        style="margin-bottom:0;" />
-                    <label
-                        style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; color: var(--danger);">
-                        <input type="checkbox" name="delete_logo" value="1">
-                        <span>🗑 Rimuovi logo attuale</span>
-                    </label>
-                </div>
-                {% endif %}
-                <input type="file" name="logo" class="form-control" accept="image/*" />
-            </div>
-
 
             <button type="submit" class="btn btn-primary">💾 Salva impostazioni</button>
             <a href="/" class="btn btn-outline" style="margin-left:0.5rem;">Annulla</a>

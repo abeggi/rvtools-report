@@ -20,3 +20,9 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Logo aziendale (sostituire con il proprio, non committare)
+app/static/logoVG.png
+
+# Note operative interne
+regole.md
