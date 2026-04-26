@@ -6,7 +6,7 @@
 <title>RVTools Analyzer — Professional VMware Infrastructure Reports</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -25,7 +25,7 @@
     --text2: #8892a4;
     --text3: #545e70;
     --mono: 'DM Mono', monospace;
-    --display: 'Syne', sans-serif;
+    --display: 'Barlow Condensed', sans-serif;
     --body: 'Inter', sans-serif;
   }
 
@@ -121,12 +121,18 @@
     position: relative;
     z-index: 1;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 440px;
+    align-items: center;
+    gap: 3rem;
     padding: 120px 2rem 80px;
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
   }
 
   .hero-badge {
@@ -165,7 +171,7 @@
     font-size: clamp(3rem, 8vw, 6.5rem);
     font-weight: 800;
     line-height: 0.95;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.01em;
     margin-bottom: 1.5rem;
     animation: fadeup 0.6s 0.1s ease both;
   }
@@ -230,11 +236,7 @@
 
   /* TERMINAL MOCKUP */
   .terminal-wrap {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 420px;
+    width: 100%;
     animation: fadeup 0.8s 0.4s ease both;
   }
 
@@ -752,6 +754,7 @@
   }
 
   @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
     .features-grid { grid-template-columns: 1fr; }
     .how-wrap { grid-template-columns: 1fr; }
     .stats-inner { grid-template-columns: 1fr 1fr; }
@@ -784,6 +787,7 @@
 <!-- HERO -->
 <section style="position:relative; z-index:1;">
   <div class="hero">
+    <div class="hero-left">
     <div class="hero-badge">
       <span class="badge-dot"></span>
       Open Source · GPL-3.0
@@ -800,6 +804,7 @@
       <a href="#how" class="btn-ghost">
         Guida installazione ↓
       </a>
+    </div>
     </div>
 
     <!-- TERMINAL -->
@@ -1070,12 +1075,13 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">
-      rvtools-analyzer · <a href="https://github.com/abeggi">Andrea Beggi</a> · GPL-3.0
+      rvtools-analyzer · by <a href="https://github.com/abeggi">abeggi</a> · GPL-3.0
     </div>
     <ul class="footer-links">
       <li><a href="https://github.com/abeggi/rvtools-report">GitHub</a></li>
       <li><a href="https://github.com/abeggi/rvtools-report/blob/main/README.md">README</a></li>
       <li><a href="https://github.com/abeggi/rvtools-report/blob/main/LICENSE">License</a></li>
+      <li><a href="https://github.com/abeggi/rvtools-report/issues">Issues</a></li>
     </ul>
   </div>
 </footer>
